@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Strategic Achievement Reflection | Infuse Advisory</title>
+
+  <style>
+    :root{
+      --green:#0f3b2b;
+      --green-dark:#0c2f23;
+      --sage:#5f6f63;
+
+      --beige:#e7e2da;
+      --beige2:#f3efe9;
+
+      --text:#102d22;
+      --muted:#4d5c56;
+
+      --line:#c9c3ba;
+      --line2:#d9d3ca;
+
+      --danger:#b3261e;
+      --ok:#0f766e;
+
+      --radius:14px;
+      --radius2:12px;
+      --shadow: 0 10px 24px rgba(16,45,34,.10);
+
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: var(--beige);
+      color: var(--text);
+    }
+
+    /* ===== Top Bar ===== */
+    .topbar{
+      background: var(--green);
+      color:#fff;
+      border-bottom: 6px solid rgba(255,255,255,.1);
+    }
+    .topbar-inner{
+      max-width:1180px;
+      margin:auto;
+      padding:16px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+    }
+    .top-title h1{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      line-height:1.15;
+    }
+    .top-title p{
+      margin:6px 0 0;
+      font-size:12.8px;
+      opacity:.9;
+      line-height:1.35;
+    }
+    .top-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo{
+      height:34px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+    }
+
+    /* ===== Layout ===== */
+    .wrap{
+      max-width:1180px;
+      margin:auto;
+      padding:18px;
+    }
+    .layout{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media(max-width:980px){
+      .layout{ grid-template-columns:1fr; }
+    }
+
+    /* ===== Side Panel ===== */
+    .side{
+      background:var(--beige2);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .side h3{
+      margin:0 0 10px;
+      font-size:13.5px;
+      text-transform:uppercase;
+      color:var(--green);
+      font-weight:900;
+      letter-spacing:.25px;
+    }
+    .side p{
+      font-size:12.8px;
+      color:var(--muted);
+      line-height:1.5;
+      margin:0 0 12px;
+      font-weight:650;
+    }
+    .pillar{
+      display:flex;
+      gap:10px;
+      padding:10px;
+      background:#fff;
+      border:1px solid var(--line2);
+      border-radius:12px;
+      margin-bottom:10px;
+    }
+    .num{
+      width:22px;height:22px;
+      border-radius:50%;
+      background:var(--green);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      margin-top:2px;
+    }
+    .pillar strong{
+      font-size:12.6px;
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:.12px;
+    }
+    .pillar span{
+      font-size:12.4px;
+      color:var(--muted);
+      display:block;
+      margin-top:2px;
+      line-height:1.45;
+      font-weight:600;
+    }
+    .note{
+      margin-top: 14px;
+      border: 1px solid rgba(15,59,43,.22);
+      background: rgba(15,59,43,.05);
+      border-radius: 12px;
+      padding: 10px 10px;
+      color: var(--muted);
+      font-size: 12.6px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    /* ===== Main Form ===== */
+    .main{
+      background:var(--beige2);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .main-hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.35);
+    }
+    .main-hd h2{
+      margin:0;
+      font-size:13.5px;
+      text-transform:uppercase;
+      color:var(--green);
+      font-weight:900;
+      letter-spacing:.25px;
+    }
+    .main-hd p{
+      margin:6px 0 0;
+      font-size:12.8px;
+      color:var(--muted);
+      line-height:1.5;
+      font-weight:650;
+    }
+    .main-bd{ padding:16px; }
+
+    label{
+      font-size:11.8px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      display:block;
+      margin-bottom:6px;
+      letter-spacing:.18px;
+    }
+    .req{ color:var(--danger); font-weight:900; }
+
+    .help{
+      margin: -2px 0 10px;
+      font-size: 12.2px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    input, textarea{
+      width:100%;
+      padding:10px 11px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      font-size:13.4px;
+      color: var(--text);
+      background:#fff;
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    textarea{ min-height:110px; resize:vertical; line-height:1.5; }
+
+    input:focus, textarea:focus{
+      border-color: rgba(15,59,43,.55);
+      box-shadow: 0 0 0 4px rgba(15,59,43,.10);
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    @media(max-width:720px){
+      .row{ grid-template-columns:1fr; }
+    }
+
+    .section-title{
+      margin:16px 0 6px;
+      padding-top:12px;
+      border-top:1px solid var(--line);
+      font-size:12.7px;
+      font-weight:900;
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:.25px;
+    }
+
+    .pill{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      margin-bottom:12px;
+    }
+    .pill-hd{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background:rgba(231,226,218,.7);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+    }
+    .pill-hd .title{
+      font-size:12.6px;
+      font-weight:900;
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:.12px;
+    }
+    .tag{
+      background:var(--sage);
+      color:#fff;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .pill-bd{ padding:12px; }
+
+    .callout{
+      background:rgba(15,59,43,.05);
+      border:1px solid rgba(15,59,43,.22);
+      border-radius:12px;
+      padding:12px;
+      font-size:13px;
+      color:var(--text);
+      line-height:1.5;
+      font-weight:650;
+    }
+
+    /* ===== Submit Button ===== */
+    .submit-wrap{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      display:flex;
+      justify-content:flex-end;
+    }
+    .btn-submit{
+      background:var(--green);
+      color:#fff;
+      border:1px solid var(--green);
+      padding:12px 18px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn-submit:hover{
+      background:var(--green-dark);
+      border-color:var(--green-dark);
+    }
+
+    .status{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      display:none;
+      font-size:13px;
+      font-weight:800;
+      line-height:1.4;
+    }
+    .status.ok{
+      display:block;
+      background:rgba(15,118,110,.08);
+      border:1px solid rgba(15,118,110,.35);
+      color:var(--green);
+    }
+    .status.err{
+      display:block;
+      background:rgba(179,38,30,.08);
+      border:1px solid rgba(179,38,30,.35);
+      color:#5a1410;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="top-title">
+        <h1>Strategic Achievement Reflection</h1>
+        <p>Narrative Only • No Scoring • Aligned to Refocus Pillars</p>
+      </div>
+      <div class="top-right">
+        <img src="logo.png" class="logo" alt="Infuse Advisory" onerror="this.style.display='none';">
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="layout">
+
+      <!-- Side -->
+      <aside class="side">
+        <h3>Refocus Pillars</h3>
+        <p>
+          Use this reflection to document what you delivered and how your work aligned to our three strategic priorities.
+          This is a narrative reflection and is not scored.
+        </p>
+
+        <div class="pillar">
+          <div class="num">1</div>
+          <div>
+            <strong>Launch & Scale Ayadi</strong>
+            <span>Execution, growth, speed, quality, and unblocking delivery.</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="num">2</div>
+          <div>
+            <strong>Financial Discipline</strong>
+            <span>Cost control, resource optimization, and spend discipline.</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="num">3</div>
+          <div>
+            <strong>Efficient Systems</strong>
+            <span>Processes/tools that reduce delays, errors, rework, and dependency.</span>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Writing tip:</strong> Use “action → outcome → impact”. Include numbers where possible (time saved, cost reduced, SLA improved, revenue impact, error reduction).
+        </div>
+      </aside>
+
+      <!-- Form -->
+      <section class="main">
+        <div class="main-hd">
+          <h2>Reflection Form</h2>
+          <p>
+            Focus on outcomes, ownership, and strategic impact. Be concise and evidence-based.
+            Where possible, include measurable results.
+          </p>
+        </div>
+
+        <div class="main-bd">
+          <form id="reflectionForm">
+
+            <div class="row">
+              <div>
+                <label>Employee Name <span class="req">*</span></label>
+                <div class="help">Enter your full name as per company records.</div>
+                <input type="text" name="employee_name" required placeholder="Full name">
+              </div>
+              <div>
+                <label>Role / Title <span class="req">*</span></label>
+                <div class="help">Your current role title (e.g., Operations Manager).</div>
+                <input type="text" name="role_title" required placeholder="Role / Title">
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>Department</label>
+                <div class="help">Optional — helps HR contextualize outcomes.</div>
+                <input type="text" name="department" placeholder="Department">
+              </div>
+              <div>
+                <label>Line Manager</label>
+                <div class="help">Optional — your direct manager during this period.</div>
+                <input type="text" name="line_manager" placeholder="Line Manager">
+              </div>
+            </div>
+
+            <div class="section-title">1) Role Focus & Core Responsibilities <span class="req">*</span></div>
+            <div class="help">
+              Summarize what you were primarily accountable for during the period. Keep it brief (4–6 bullets is ideal).
+            </div>
+            <textarea name="role_focus" required placeholder="Example: • Owned X • Led Y • Supported Z • Accountable for ..."></textarea>
+
+            <div class="section-title">2) Strategic Achievements Aligned to the Three Pillars <span class="req">*</span></div>
+            <div class="help">
+              For each pillar, write what you delivered and what changed as a result (moved/improved/unblocked).
+              Include measurable outcomes where possible.
+            </div>
+
+            <div class="pill">
+              <div class="pill-hd">
+                <div class="title">A. Launch & Scale Ayadi Successfully</div>
+                <div class="tag">Pillar 1</div>
+              </div>
+              <div class="pill-bd">
+                <div class="help">
+                  Focus on execution and delivery: what shipped, what improved, what got unblocked, and your role in making it happen.
+                </div>
+                <textarea name="pillar_launch" required placeholder="Example: Implemented X → reduced Y by Z% / enabled launch milestone / improved speed ..."></textarea>
+              </div>
+            </div>
+
+            <div class="pill">
+              <div class="pill-hd">
+                <div class="title">B. Maintain Financial Discipline</div>
+                <div class="tag">Pillar 2</div>
+              </div>
+              <div class="pill-bd">
+                <div class="help">
+                  Highlight cost control, budget management, spend discipline, productivity, and efficiency gains.
+                </div>
+                <textarea name="pillar_finance" required placeholder="Example: Reduced cost A / optimized vendor B / avoided spend C / improved utilization ..."></textarea>
+              </div>
+            </div>
+
+            <div class="pill">
+              <div class="pill-hd">
+                <div class="title">C. Build Efficient Internal Systems</div>
+                <div class="tag">Pillar 3</div>
+              </div>
+              <div class="pill-bd">
+                <div class="help">
+                  Describe systems/processes/SOPs/tools you built or improved, and the impact on speed, quality, and independence.
+                </div>
+                <textarea name="pillar_systems" required placeholder="Example: Built SOP/tool/process → reduced errors/delays/rework; improved visibility; reduced dependency ..."></textarea>
+              </div>
+            </div>
+
+            <div class="section-title">3) Ownership, Initiative & Decision-Making</div>
+            <div class="help">
+              Provide examples where you took ownership, made decisions, responded to feedback, or escalated issues appropriately.
+            </div>
+            <textarea name="ownership" placeholder="Example: Identified risk → escalated early → prevented delay; took ownership of ..."></textarea>
+
+            <div class="section-title">4) Key Challenges & Constraints</div>
+            <div class="help">
+              Mention major obstacles and how you addressed them. Focus on actions and judgment, not excuses.
+            </div>
+            <textarea name="challenges" placeholder="Example: Constraint X → mitigation Y → outcome Z ..."></textarea>
+
+            <div class="section-title">5) Reflection Summary</div>
+            <div class="help">
+              What impact are you most accountable for? What would you do differently? What are the key lessons to carry forward?
+            </div>
+            <textarea name="summary" placeholder="Short, clear summary of your impact and learnings..."></textarea>
+
+            <div class="section-title">Declaration</div>
+            <div class="help">Submitting this reflection indicates you confirm it is accurate to the best of your knowledge.</div>
+            <div class="callout">
+              By submitting this reflection, you confirm the information provided is accurate to the best of your knowledge.
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-wrap">
+              <button type="button" class="btn-submit" id="btnSubmit">Submit Reflection</button>
+            </div>
+
+            <div class="status" id="statusBox"></div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // HR/Admin config (not shown in the UI)
+    const ENDPOINT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    const form = document.getElementById('reflectionForm');
+    const statusBox = document.getElementById('statusBox');
+
+    function setStatus(type, msg){
+      statusBox.className = 'status ' + type;
+      statusBox.textContent = msg;
+    }
+
+    function serializeForm(){
+      const data = {};
+      new FormData(form).forEach((v,k)=>data[k]=String(v).trim());
+      data.submitted_at = new Date().toISOString();
+      return data;
+    }
+
+    async function submit(){
+      if(ENDPOINT_URL.includes("PASTE")){
+        setStatus('err','Submission is not configured. Please contact HR.');
+        return;
+      }
+
+      if(!form.reportValidity()){
+        setStatus('err','Please complete all required fields before submitting.');
+        return;
+      }
+
+      const payload = serializeForm();
+      const mustHave = ['role_focus','pillar_launch','pillar_finance','pillar_systems'];
+      for(const k of mustHave){
+        if(!payload[k]){
+          setStatus('err','Please complete the three pillar sections before submitting.');
+          return;
+        }
+      }
+
+      setStatus('', 'Submitting…');
+
+      try{
+        const res = await fetch(ENDPOINT_URL,{
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: JSON.stringify(payload)
+        });
+        const text = await res.text();
+        if(!res.ok) throw new Error(text || 'Submission error');
+
+        setStatus('ok','Submitted successfully.');
+      }catch(err){
+        setStatus('err','Submission failed. Please try again later or contact HR.');
+      }
+    }
+
+    document.getElementById('btnSubmit').addEventListener('click', submit);
+  </script>
+
+</body>
+</html>
