@@ -46,14 +46,15 @@
       border-bottom: 6px solid rgba(255,255,255,.1);
     }
     .topbar-inner{
-      max-width:1180px;
-      margin:auto;
-      padding:16px 18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:16px;
-    }
+  max-width:1180px;
+  margin:auto;
+  padding:0 18px;     /* شيل padding الرأسي */
+  height:72px;        /* ارتفاع الهيدر الفعلي */
+  display:flex;
+  justify-content:space-between;
+  align-items:center; /* توسيط رأسي مضبوط */
+  gap:16px;
+}
     .top-title h1{
       margin:0;
       font-size:18px;
@@ -75,9 +76,9 @@
     }
     .logo{
   height:100%;
-  max-height:56px; /* نفس ارتفاع الهيدر تقريبًا */
-  width:auto;
+  width:auto;          /* يحافظ على كونه مربع */
   object-fit:contain;
+  display:block;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
 }
 
@@ -590,4 +591,5 @@
 
 </body>
 </html>
+
 
