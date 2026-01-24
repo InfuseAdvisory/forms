@@ -543,11 +543,18 @@
     }
 
     function serializeForm(){
-      const data = {};
-      new FormData(form).forEach((v,k)=>data[k]=String(v).trim());
-      data.submitted_at = new Date().toISOString();
-      return data;
-    }
+  const data = {};
+  new FormData(form).forEach((v,k)=>data[k]=String(v).trim());
+
+  data.form_type = "Strategic Achievement Reflection";   // ✅ مهم جدًا
+  data.submitted_at = new Date().toISOString();
+
+  // (اختياري) يساعد HR في تتبّع مصدر الإرسال
+  data.source_url = window.location.href;
+
+  return data;
+}
+
 
     async function submit(){
       if(ENDPOINT_URL.includes("PASTE")){
@@ -591,6 +598,7 @@
 
 </body>
 </html>
+
 
 
 
