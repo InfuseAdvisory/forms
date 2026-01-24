@@ -74,9 +74,12 @@
       gap:12px;
     }
     .logo{
-      height:34px;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
-    }
+  height:100%;
+  max-height:56px; /* نفس ارتفاع الهيدر تقريبًا */
+  width:auto;
+  object-fit:contain;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+}
 
     /* ===== Layout ===== */
     .wrap{
@@ -587,3 +590,4 @@
 
 </body>
 </html>
+
