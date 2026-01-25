@@ -357,6 +357,41 @@
       border:1px solid rgba(179,38,30,.35);
       color:#5a1410;
     }
+
+    /* ===== Autocomplete (contains search) ===== */
+    .ac{ position: relative; }
+    .ac-panel{
+      position:absolute;
+      top: calc(100% + 6px);
+      left:0; right:0;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow: 0 10px 24px rgba(16,45,34,.14);
+      overflow:hidden;
+      z-index: 50;
+      display:none;
+    }
+    .ac-panel.open{ display:block; }
+    .ac-item{
+      padding:10px 12px;
+      font-size:13.2px;
+      color:var(--text);
+      cursor:pointer;
+      border-bottom:1px solid rgba(0,0,0,.06);
+      line-height:1.35;
+    }
+    .ac-item:last-child{ border-bottom:none; }
+    .ac-item:hover,
+    .ac-item.active{
+      background: rgba(15,59,43,.07);
+    }
+    .ac-empty{
+      padding:10px 12px;
+      font-size:12.8px;
+      color:var(--muted);
+      background: rgba(231,226,218,.35);
+    }
   </style>
 </head>
 
@@ -427,7 +462,9 @@
               <div>
                 <label>Employee Name <span class="req">*</span></label>
                 <div class="help">Enter your full name as per company records.</div>
-                <input type="text" name="employee_name" required placeholder="Full name">
+                <div class="ac">
+                  <input type="text" name="employee_name" required placeholder="Full name" autocomplete="off" data-ac="people">
+                </div>
               </div>
               <div>
                 <label>Role / Title <span class="req">*</span></label>
@@ -445,7 +482,9 @@
               <div>
                 <label>Line Manager</label>
                 <div class="help">Optional — your direct manager during the evaluation period.</div>
-                <input type="text" name="line_manager" placeholder="Line Manager">
+                <div class="ac">
+                  <input type="text" name="line_manager" placeholder="Line Manager" autocomplete="off" data-ac="people">
+                </div>
               </div>
             </div>
 
@@ -660,6 +699,161 @@
     const form = document.getElementById('msaForm');
     const statusBox = document.getElementById('statusBox');
 
+    // People list (single source of truth)
+    const PEOPLE = [
+      "Hisham Loay Nazer",
+      "Hala Khalid Khalid AlSharif",
+      "Ahmed Omar Ahmed Almashjari",
+      "Dana Abdulaziz Almaddah",
+      "Shuroq Talal Ganbou",
+      "Amani Ahmed Al hashidi",
+      "Alawi Hussain Shehab",
+      "Abdullah Omar Ahmed Almashjari",
+      "Ruhul Quddus",
+      "Abu Bakr Adoum Idriss",
+      "Ahmad Abdul-Razak Hajlaoui",
+      "Sultan Turkistani",
+      "Wareef Alshaikh",
+      "Ezzaddin Ali Qaid Abdullah",
+      "Hassan Abdelazim Abdalla Ahmed",
+      "Jahan Shah Abul Basher",
+      "Sahar Abdullah Fawaz Alsubaie",
+      "Yogesh Sonawane"
+    ];
+
+    function isValidPersonName(value){
+      const v = (value || "").trim().toLowerCase();
+      return PEOPLE.some(p => p.trim().toLowerCase() === v);
+    }
+
+    function initAutocompletePeople() {
+      const inputs = document.querySelectorAll('input[data-ac="people"]');
+
+      inputs.forEach(input => {
+        const wrap = input.closest('.ac') || input.parentElement;
+        const panel = document.createElement('div');
+        panel.className = 'ac-panel';
+        wrap.appendChild(panel);
+
+        let activeIndex = -1;
+
+        const normalize = (s) => (s || "").toString().toLowerCase().trim();
+
+        function openPanel() { panel.classList.add('open'); }
+        function closePanel() { panel.classList.remove('open'); activeIndex = -1; }
+
+        function setActive(idx) {
+          activeIndex = idx;
+          const items = panel.querySelectorAll('.ac-item');
+          items.forEach((el, i) => el.classList.toggle('active', i === activeIndex));
+          if (items[activeIndex]) items[activeIndex].scrollIntoView({ block: 'nearest' });
+        }
+
+        function renderList(query) {
+          panel.innerHTML = "";
+          const q = normalize(query);
+
+          let matches = [];
+          if (!q) {
+            matches = PEOPLE.slice(0, 8);
+          } else {
+            matches = PEOPLE.filter(name => normalize(name).includes(q));
+          }
+
+          if (!matches.length) {
+            const empty = document.createElement('div');
+            empty.className = 'ac-empty';
+            empty.textContent = 'No matches';
+            panel.appendChild(empty);
+            openPanel();
+            return;
+          }
+
+          matches.slice(0, 12).forEach((name) => {
+            const item = document.createElement('div');
+            item.className = 'ac-item';
+            item.textContent = name;
+
+            item.addEventListener('mousedown', (ev) => {
+              ev.preventDefault();
+              input.value = name;
+              input.setCustomValidity("");
+              input.style.borderColor = "";
+              input.style.boxShadow = "";
+              closePanel();
+            });
+
+            panel.appendChild(item);
+          });
+
+          openPanel();
+        }
+
+        input.addEventListener('focus', () => renderList(input.value));
+        input.addEventListener('input', () => {
+          input.setCustomValidity("");
+          input.style.borderColor = "";
+          input.style.boxShadow = "";
+          renderList(input.value);
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (!panel.classList.contains('open')) return;
+
+          const items = panel.querySelectorAll('.ac-item');
+          const count = items.length;
+
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (!count) return;
+            const next = (activeIndex + 1) % count;
+            setActive(next);
+          }
+
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (!count) return;
+            const prev = (activeIndex - 1 + count) % count;
+            setActive(prev);
+          }
+
+          if (e.key === 'Enter') {
+            if (activeIndex >= 0 && items[activeIndex]) {
+              e.preventDefault();
+              input.value = items[activeIndex].textContent;
+              input.setCustomValidity("");
+              input.style.borderColor = "";
+              input.style.boxShadow = "";
+              closePanel();
+            }
+          }
+
+          if (e.key === 'Escape') closePanel();
+        });
+
+        document.addEventListener('mousedown', (ev) => {
+          if (!wrap.contains(ev.target)) closePanel();
+        });
+
+        input.addEventListener('blur', () => {
+          setTimeout(() => closePanel(), 120);
+
+          const val = input.value.trim();
+          if (!val) return;
+          if(!isValidPersonName(val)){
+            input.setCustomValidity("Please select a valid name from the list.");
+            input.reportValidity();
+            input.style.borderColor = "rgba(179,38,30,.6)";
+            input.style.boxShadow = "0 0 0 4px rgba(179,38,30,.10)";
+          } else {
+            input.setCustomValidity("");
+            input.style.borderColor = "";
+            input.style.boxShadow = "";
+          }
+        });
+      });
+    }
+
     function setStatus(type, msg){
       statusBox.className = 'status ' + type;
       statusBox.textContent = msg;
@@ -684,6 +878,22 @@
         return;
       }
 
+      // Enforce names must be from list
+      const peopleInputs = form.querySelectorAll('input[data-ac="people"]');
+      for (const input of peopleInputs) {
+        const val = input.value.trim();
+        if (val && !isValidPersonName(val)) {
+          input.setCustomValidity("Please select a valid name from the list.");
+          input.reportValidity();
+          input.style.borderColor = "rgba(179,38,30,.6)";
+          input.style.boxShadow = "0 0 0 4px rgba(179,38,30,.10)";
+          return;
+        }
+        input.setCustomValidity("");
+        input.style.borderColor = "";
+        input.style.boxShadow = "";
+      }
+
       setStatus('', 'Submitting…');
 
       try{
@@ -696,11 +906,22 @@
         const text = await res.text();
         if(!res.ok) throw new Error(text || 'Submission error');
 
-        setStatus('ok','Submitted successfully.');
+        // Redirect to success page (same brand palette)
+        const employee = (form.querySelector('input[name="employee_name"]')?.value || "").trim();
+        const formName = "Managerial Self-Assessment";
+        const backUrl = window.location.href.split("#")[0];
+
+        window.location.href =
+          "success.html?form=" + encodeURIComponent(formName) +
+          "&employee=" + encodeURIComponent(employee) +
+          "&back=" + encodeURIComponent(backUrl);
+
       }catch(err){
         setStatus('err','Submission failed. Please try again later or contact HR.');
       }
     }
+
+    initAutocompletePeople();
 
     document.getElementById('btnSubmit').addEventListener('click', submit);
     document.getElementById('btnReset').addEventListener('click', () => {
@@ -713,4 +934,3 @@
   </script>
 </body>
 </html>
-
