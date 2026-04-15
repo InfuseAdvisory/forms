@@ -897,14 +897,12 @@
       setStatus('', 'Submitting…');
 
       try{
-        const res = await fetch(ENDPOINT_URL,{
-          method:'POST',
-          headers:{'Content-Type':'text/plain;charset=utf-8'},
-          body: JSON.stringify(serializeForm())
-        });
-
-        const text = await res.text();
-        if(!res.ok) throw new Error(text || 'Submission error');
+        await fetch(ENDPOINT_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+  body: JSON.stringify(serializeForm()),
+  mode: 'no-cors'
+});
 
         // Redirect to success page (same brand palette)
         const employee = (form.querySelector('input[name="employee_name"]')?.value || "").trim();
